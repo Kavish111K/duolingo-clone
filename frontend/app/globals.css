@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+/* Surface colors switch with the theme; brand colors stay the same */
+:root {
+  --bg: #ffffff;
+  --fg: #4b4b4b;
+  --muted: #777777;
+  --line: #e5e5e5;
+  --soft: #f7f7f7;
+  --sel-bg: #ddf4ff;
+  --ok-bg: #d7ffb8;
+  --bad-bg: #ffdfe0;
+}
+html.dark {
+  --bg: #131f24;
+  --fg: #f1f7fb;
+  --muted: #8a9ba4;
+  --line: #37464f;
+  --soft: #202f36;
+  --sel-bg: #1d3a48;
+  --ok-bg: #202f36;
+  --bad-bg: #202f36;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-soft: var(--soft);
+  --color-sel: var(--sel-bg);
+  --color-green: #58cc02;
+  --color-blue: #1cb0f6;
+  --color-red: #ff4b4b;
+  --color-gold: #ffc800;
+  --color-orange: #ff9600;
+  --font-sans: var(--font-nunito);
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-weight: 600;
+}
+
+/* Duolingo's chunky "3D" buttons */
+.btn {
+  border-radius: 16px;
+  padding: 12px 20px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  transition: filter 0.1s;
+}
+.btn:hover { filter: brightness(1.05); }
+.btn:active:not(:disabled) { transform: translateY(4px); box-shadow: none; }
+.btn-green { background: #58cc02; color: #fff; box-shadow: 0 4px 0 #58a700; }
+.btn-blue { background: #1cb0f6; color: #fff; box-shadow: 0 4px 0 #1899d6; }
+.btn-red { background: #ff4b4b; color: #fff; box-shadow: 0 4px 0 #ea2b2b; }
+.btn-outline { background: var(--bg); color: #1cb0f6; border: 2px solid var(--line); box-shadow: 0 4px 0 var(--line); }
+.btn:disabled { background: var(--line); color: var(--muted); box-shadow: none; cursor: default; }
+
+/* Answer tiles used in exercises */
+.tile {
+  border: 2px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 2px 0 var(--line);
+  background: var(--bg);
+  cursor: pointer;
+}
+.tile:active { transform: translateY(2px); box-shadow: none; }
+.tile.selected { border-color: #84d8ff; background: var(--sel-bg); color: #1899d6; box-shadow: 0 2px 0 #84d8ff; }
+.tile.correct { border-color: #a5ed6e; background: var(--ok-bg); color: #58a700; }
+.tile.wrong { border-color: #ff4b4b; background: var(--bad-bg); color: #ea2b2b; }
+.tile.used { color: transparent; background: var(--line); box-shadow: none; pointer-events: none; }
+
+.card { border: 2px solid var(--line); border-radius: 16px; padding: 20px; }
+
+@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes slide-up { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes pop { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+@keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
+.animate-bob { animation: bob 1.2s ease-in-out infinite; }
+.animate-slide-up { animation: slide-up 0.25s ease-out; }
+.animate-pop { animation: pop 0.25s ease-out; }
+.animate-shake { animation: shake 0.3s; }
+
+/* "Animations" turned off in settings */
+html.no-anim *, html.no-anim *::before { animation: none !important; transition: none !important; }
