@@ -44,13 +44,14 @@ Open http://localhost:3000. The API URL defaults to `http://localhost:8000/api`.
 ## Features
 
 - **Learning path**: "Section 1, Unit N" banners with a Guidebook button and a zig-zag path of star nodes with treasure chests. Each node is completed (✓), legendary (🏆 gold), available (progress ring + bouncing START) or locked (grey star). Crowns 👑 show lessons finished in a skill. Clicking a node opens a popover with START / PRACTICE / LEGENDARY.
-- **Top bar**: course flag ("My courses" menu), streak, total XP, gems and hearts.
+- **Top bar**: course flag ("My courses" menu), streak, gems and hearts. Total XP is shown on the profile and the lesson-complete screen, and today's XP in Daily Quests.
+- **Onboarding**: "How much Spanish do you know?" with 5 levels. It appears when you open the site or go to Learn until you answer it. The answer is saved on the server (`users.proficiency`) and shown on the profile.
 - **Lesson player**: multiple choice (picture cards), translate with a word bank, match pairs, fill in the blank, and type the answer. It has a progress bar, a green/red feedback bar with the correct solution, and keyboard support (Enter = check/continue). Wrong answers are repeated at the end of the lesson, like in Duolingo.
 - **Hearts**: you lose 1 per wrong answer. At 0 hearts the "out of hearts" modal appears, offering a refill for 350 gems or a practice lesson. Hearts regenerate at 1 every 30 minutes, and each practice lesson gives +1 heart.
 - **XP and streak**: each lesson gives 10 XP, plus 5 for a perfect lesson. The streak goes up once per day you finish a lesson and resets if you miss a day.
 - **Daily goal**: a progress card for "Earn N XP". The goal (10/20/30/50) can be changed in Settings.
 - **Leaderboard**: a weekly "Bronze League" ranked by XP earned since Monday, across 8 seeded learners plus you.
-- **Profile**: day streak, total XP, longest streak, lessons completed, and achievements (locked ones are greyed out).
+- **Profile**: banner with an empty avatar and an edit button (changes the display name), join date, level, statistics (day streak, total XP, current league, lessons completed) and achievements (locked ones are greyed out). The right column has Following/Followers tabs and Add friends (placeholders).
 - **Legendary challenge (timed)**: on a completed skill, a lesson with a 90-second timer and no heart loss. Finishing in time gives 40 XP and turns the node gold; when time runs out, a "Time's up" popup offers a retry.
 - **Extras (bonus)**: achievements with unlock toasts, text-to-speech audio (browser `speechSynthesis`, Spanish voice), dark mode, and a responsive layout (bottom nav on mobile).
 - **Settings (Preferences)**: toggles for sound effects (correct/wrong sounds made with the Web Audio API), animations, motivational messages and listening exercises (text-to-speech). Dark mode can be System default / Light / Dark. These choices are saved in the browser (`localStorage`). The daily goal is saved on the server.
@@ -76,7 +77,8 @@ frontend/
     Layout.tsx        page shell: sidebar, stats bar, right panel, shared learner stats
     LessonPlayer.tsx  the lesson loop: check answers, hearts, feedback bar, finish
     Exercises.tsx     the 5 exercise types (all take the same props)
-    Popups.tsx        toast, out-of-hearts popup, lesson-complete screen
+    Popups.tsx        toast, out-of-hearts popup, time's-up popup, lesson-complete screen
+    Onboarding.tsx    "How much Spanish do you know?" screen
     Mascot.tsx        owl mascot + "coming soon" block
     Icons.tsx         SVG icons (house, shield, chest, shop, flame, gem, heart, bolt, lock)
   lib/api.ts        API calls, text-to-speech, small helpers
@@ -95,7 +97,7 @@ courses (id, language, title, flag)
                     └── exercises (id, lesson_id FK, position, type, prompt, data JSON)
 
 users (id, username UNIQUE, display_name, avatar_color, xp, gems, hearts, hearts_updated_at,
-       streak, longest_streak, last_active_date, daily_goal, day_offset, created_at)
+       streak, longest_streak, last_active_date, daily_goal, day_offset, proficiency, created_at)
 
 user_skill_progress (id, user_id FK, skill_id FK, lessons_completed, completed, legendary)   UNIQUE(user_id, skill_id)
 lesson_completions  (id, user_id FK, lesson_id FK, xp_earned, mistakes, completed_on)
@@ -118,7 +120,7 @@ user_achievements   (id, user_id FK, achievement_id FK, unlocked_at)            
 
 | Method | Endpoint | Description |
 |---|---|---|
-| GET | `/me` | Learner stats: xp, gems, hearts (after regen), streak, today's XP, daily goal |
+| GET | `/me` | Learner stats: xp, gems, hearts (after regen), streak, today's XP, daily goal, proficiency |
 | GET | `/course` | Units → skills with status `locked/available/completed` and lesson progress |
 | GET | `/skills/{id}/lesson?mode=` | Next lesson of a skill with its exercises. `mode` = normal / practice / legendary (403 if locked, or out of hearts in normal mode) |
 | POST | `/lessons/{id}/complete` | Body `{mistakes, mode}`. Awards XP, updates streak/progress (practice: +1 heart, legendary: marks the skill), returns new achievements |
@@ -126,7 +128,7 @@ user_achievements   (id, user_id FK, achievement_id FK, unlocked_at)            
 | POST | `/hearts/refill` | Refill hearts for 350 gems |
 | GET | `/leaderboard` | Weekly XP ranking |
 | GET | `/profile` | Stats + achievements |
-| PUT | `/settings` | Update `daily_goal` / `display_name` |
+| PUT | `/settings` | Update `daily_goal` / `display_name` / `proficiency` (0–4) |
 | POST | `/dev/next-day` | Testing helper: simulate the next day (for streaks) |
 
 ## Testing the streak
