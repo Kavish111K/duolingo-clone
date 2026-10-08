@@ -64,6 +64,7 @@ function StreakPopup({ me, toast }: { me: Me; toast: (m: string) => void }) {
   const message = me.streak === 0 ? "Do a lesson today to start a new streak!"
     : me.streak >= me.longest_streak ? "You've earned your longest streak ever!"
     : `Keep it going! Your longest streak is ${me.longest_streak} days.`;
+  const week = me.streak_week ?? Array(7).fill(false); // empty calendar if the server didn't send it
 
   return (
     <>
@@ -79,9 +80,9 @@ function StreakPopup({ me, toast }: { me: Me; toast: (m: string) => void }) {
         <div className="mt-4 flex justify-between rounded-2xl bg-white px-3 py-3">
           {DAYS.map((d, i) => (
             <div key={i} className="flex flex-col items-center gap-2">
-              <span className={`font-extrabold ${i === me.today_index ? "text-orange" : "text-[#afafaf]"}`}>{d}</span>
-              <span className={`flex h-8 w-8 items-center justify-center rounded-full text-sm text-white ${me.streak_week[i] ? "bg-orange" : "bg-[#e5e5e5]"}`}>
-                {me.streak_week[i] && "✓"}
+              <span className={`font-extrabold ${i === (me.today_index ?? -1) ? "text-orange" : "text-[#afafaf]"}`}>{d}</span>
+              <span className={`flex h-8 w-8 items-center justify-center rounded-full text-sm text-white ${week[i] ? "bg-orange" : "bg-[#e5e5e5]"}`}>
+                {week[i] && "✓"}
               </span>
             </div>
           ))}
