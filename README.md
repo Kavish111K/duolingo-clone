@@ -51,7 +51,8 @@ frontend/
   app/              one folder per page: learn (page.tsx), leaderboard, quests, shop, profile, settings,
                     lesson/[skillId] (full-screen lesson)
   components/
-    Layout.tsx        page shell: sidebar, stats bar, right panel, shared learner stats
+    Layout.tsx        page shell: sidebar, right panel, shared learner stats
+    TopBar.tsx        top bar (flag, streak, gems, hearts) and its popups
     LessonPlayer.tsx  the lesson loop: check answers, hearts, feedback bar, finish
     Exercises.tsx     the 5 exercise types (all take the same props)
     Popups.tsx        toast, out-of-hearts popup, time's-up popup, lesson-complete screen
@@ -97,7 +98,7 @@ user_achievements   (id, user_id FK, achievement_id FK, unlocked_at)            
 
 | Method | Endpoint | Description |
 |---|---|---|
-| GET | `/me` | Learner stats: xp, gems, hearts (after regen), streak, today's XP, daily goal, proficiency |
+| GET | `/me` | Learner stats: xp, gems, hearts (after regen), streak, today's XP, daily goal, proficiency, this week's streak days (`streak_week`) and minutes until the next heart (`next_heart_minutes`) |
 | GET | `/course` | Units → skills with status `locked/available/completed` and lesson progress |
 | GET | `/skills/{id}/lesson?mode=` | Next lesson of a skill with its exercises. `mode` = normal / practice / legendary (403 if locked, or out of hearts in normal mode) |
 | POST | `/lessons/{id}/complete` | Body `{mistakes, mode}`. Awards XP, updates streak/progress (practice: +1 heart, legendary: marks the skill), returns new achievements |
@@ -138,7 +139,11 @@ The demo has a single shared learner (login is simplified), so progress you make
 ## Features
 
 - **Learning path**: "Section 1, Unit N" banners with a Guidebook button and a zig-zag path of star nodes with treasure chests. Each node is completed (✓), legendary (🏆 gold), available (progress ring + bouncing START) or locked (grey star). Crowns 👑 show lessons finished in a skill. Clicking a node opens a popover with START / PRACTICE / LEGENDARY.
-- **Top bar**: course flag ("My courses" menu), streak, total XP, gems and hearts.
+- **Top bar**: course flag with course count, streak, gems and hearts, like Duolingo. Total XP is shown on the profile, the lesson-complete screen and the leaderboard. Each item opens a popup on hover or click:
+  - **Courses**: "My courses" (Spanish) and "Add a new course" (coming soon).
+  - **Streak**: "N day streak", this week's calendar with a check on each streak day, Friend Streaks (coming soon) and the Streak Society (unlocks at 7 days).
+  - **Gems**: your gem count and a link to the shop.
+  - **Hearts**: your hearts, "Next heart in …", and Unlimited hearts (coming soon), Refill hearts (350 gems) and Practice to earn hearts.
 - **Treasure chests**: grey while locked, gold once the skill before them is completed. Clicking one shows a message; chest rewards are a placeholder.
 - **Onboarding**: "How much Spanish do you know?" with 5 levels. It appears when you open the site or go to Learn until you answer it. The answer is saved on the server (`users.proficiency`) and shown on the profile.
 - **Lesson player**: multiple choice (picture cards), translate with a word bank, match pairs, fill in the blank, and type the answer. It has a progress bar, a green/red feedback bar with the correct solution, and keyboard support (Enter = check/continue). Wrong answers are repeated at the end of the lesson, like in Duolingo.

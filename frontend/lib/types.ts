@@ -13,6 +13,9 @@ export interface Me {
   today_xp: number;
   joined: string;
   proficiency: number | null; // answer to "How much Spanish do you know?"
+  streak_week: boolean[]; // Sunday..Saturday: part of the current streak?
+  today_index: number; // 0 = Sunday
+  next_heart_minutes: number | null; // null when hearts are full
 }
 
 export interface Skill {

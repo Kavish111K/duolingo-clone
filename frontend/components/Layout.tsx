@@ -6,8 +6,9 @@ import { api } from "@/lib/api";
 import { LeaderboardRow, Me } from "@/lib/types";
 import Mascot from "./Mascot";
 import Onboarding from "./Onboarding";
+import TopBar from "./TopBar";
 import { Toast } from "./Popups";
-import { BoltIcon, ChestIcon, EnvelopeIcon, FlagIcon, FlameIcon, GemIcon, HeartIcon, HouseIcon, SearchIcon, ShieldIcon, ShopIcon } from "./Icons";
+import { BoltIcon, ChestIcon, EnvelopeIcon, FlagIcon, HouseIcon, SearchIcon, ShieldIcon, ShopIcon } from "./Icons";
 
 // ---------- shared learner stats + a toast any page can show ----------
 interface AppState {
@@ -48,7 +49,7 @@ export default function Shell({ children }: { children: React.ReactNode }) {
           <div className="flex justify-center gap-12 md:pl-64">
             <main className="w-full max-w-[600px] px-4 pb-24 md:pt-6">
               <div className="sticky top-0 z-30 mb-4 border-b-2 border-line bg-bg py-3 lg:hidden">
-                <StatsBar />
+                <TopBar me={me} refresh={refresh} toast={setMessage} />
               </div>
               {children}
             </main>
@@ -56,7 +57,7 @@ export default function Shell({ children }: { children: React.ReactNode }) {
             <aside className="sticky top-0 hidden h-screen w-[368px] shrink-0 flex-col gap-6 overflow-y-auto px-6 py-6 lg:flex">
               {path === "/settings" ? <SettingsMenu /> : (
                 <>
-                  <StatsBar />
+                  <TopBar me={me} refresh={refresh} toast={setMessage} />
                   {path === "/quests" ? <MonthlyCard /> : path === "/profile" ? <FriendsCards /> : (
                     <>
                       <SuperCard />
@@ -138,39 +139,6 @@ function Sidebar() {
 
 export function Flag({ size = 40 }: { size?: number }) {
   return <FlagIcon width={size} />;
-}
-
-function StatsBar() {
-  const { me, toast } = useUser();
-  const [coursesOpen, setCoursesOpen] = useState(false);
-  if (!me) return <div className="h-10" />;
-
-  return (
-    <div className="flex items-center justify-between gap-2 text-lg font-extrabold">
-      {/* language flag with the "My courses" dropdown */}
-      <div className="relative" onMouseLeave={() => setCoursesOpen(false)}>
-        <button className="rounded-xl p-2 hover:bg-soft" onClick={() => setCoursesOpen(!coursesOpen)} onMouseEnter={() => setCoursesOpen(true)}>
-          <Flag />
-        </button>
-        {coursesOpen && (
-          <div className="absolute left-0 top-full z-40 w-72 overflow-hidden rounded-2xl border-2 border-line bg-bg">
-            <p className="border-b-2 border-line px-5 py-3 text-sm uppercase text-muted">My courses</p>
-            <div className="flex items-center gap-4 border-b-2 border-line bg-sel px-5 py-3 text-blue"><Flag /> Spanish</div>
-            <button className="flex w-full items-center gap-4 px-5 py-3 hover:bg-soft" onClick={() => toast("More languages are coming soon")}>
-              <span className="flex h-[30px] w-10 items-center justify-center rounded-md border-2 border-line text-muted">+</span>
-              Add a new course
-            </button>
-          </div>
-        )}
-      </div>
-      <span className={`flex items-center gap-2 ${me.streak > 0 ? "text-orange" : "text-line"}`} title="Day streak">
-        <FlameIcon active={me.streak > 0} />{me.streak}
-      </span>
-      <Link href="/profile" className="flex items-center gap-2 text-gold" title="Total XP"><BoltIcon size={28} />{me.xp}</Link>
-      <Link href="/shop" className="flex items-center gap-2 text-blue" title="Gems"><GemIcon />{me.gems}</Link>
-      <Link href="/shop" className="flex items-center gap-2 text-red" title="Hearts"><HeartIcon />{me.hearts}</Link>
-    </div>
-  );
 }
 
 // Mocked "Super" subscription advert

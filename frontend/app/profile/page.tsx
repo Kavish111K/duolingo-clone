@@ -24,7 +24,6 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const load = () => api<Profile>("/profile").then(setProfile).catch(() => {});
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { load(); }, []);
 
   const editName = async () => {

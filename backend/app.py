@@ -118,6 +118,23 @@ def get_current_user(db: Session = Depends(get_db)) -> models.User:
     return user
 
 
+def streak_week(user: models.User) -> list[bool]:
+    """Sunday..Saturday of the current week: True for the days that are part of the current streak."""
+    t = today(user)
+    sunday = t - timedelta(days=(t.weekday() + 1) % 7)
+    streak = current_streak(user)
+    streak_days = {user.last_active_date - timedelta(days=i) for i in range(streak)} if streak else set()
+    return [sunday + timedelta(days=i) in streak_days for i in range(7)]
+
+
+def next_heart_minutes(user: models.User) -> int | None:
+    """Minutes until the next heart regenerates (None when hearts are full)."""
+    if user.hearts >= MAX_HEARTS:
+        return None
+    left = user.hearts_updated_at + HEART_REGEN - datetime.utcnow()
+    return max(1, -(-int(left.total_seconds()) // 60))  # round up
+
+
 def user_stats(db: Session, user: models.User) -> dict:
     return {
         "id": user.id,
@@ -134,6 +151,9 @@ def user_stats(db: Session, user: models.User) -> dict:
         "today_xp": today_xp(db, user),
         "joined": user.created_at.date().isoformat(),
         "proficiency": user.proficiency,
+        "streak_week": streak_week(user),
+        "today_index": (today(user).weekday() + 1) % 7,  # 0 = Sunday
+        "next_heart_minutes": next_heart_minutes(user),
     }
 
 

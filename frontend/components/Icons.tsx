@@ -71,11 +71,39 @@ export function GemIcon({ size = 28 }: P) {
   );
 }
 
-export function HeartIcon({ size = 28 }: P) {
+// "full" = red, "next" = faded (the heart that is regenerating), "empty" = grey
+export function HeartIcon({ size = 28, state = "full" }: P & { state?: "full" | "next" | "empty" }) {
+  const fill = { full: "#ff4b4b", next: "#ffdfe0", empty: "var(--line)" }[state];
   return (
     <svg width={size} height={size} viewBox="0 0 24 24">
-      <path d="M12 21C5 16 2 12.5 2 8.5A5 5 0 0 1 12 6a5 5 0 0 1 10 2.5c0 4-3 7.5-10 12.5z" fill="#ff4b4b" />
-      <ellipse cx="7.5" cy="8.5" rx="3" ry="2" fill="#ff8b8b" transform="rotate(-25 7.5 8.5)" />
+      <path d="M12 21C5 16 2 12.5 2 8.5A5 5 0 0 1 12 6a5 5 0 0 1 10 2.5c0 4-3 7.5-10 12.5z" fill={fill} />
+      {state === "full" && <ellipse cx="7.5" cy="8.5" rx="3" ry="2" fill="#ff8b8b" transform="rotate(-25 7.5 8.5)" />}
+    </svg>
+  );
+}
+
+// Big white-outlined flame for the streak popup header
+export function FlameBadge({ size = 90 }: P) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24">
+      <path d="M12 2c1 4 7 6 7 13a7 7 0 0 1-14 0c0-3 1.5-5 3.5-6.5 0 2 1 3.5 2.5 3.5C11 9 10.5 5 12 2z"
+        fill="none" stroke="#fff" strokeWidth="1.4" strokeLinejoin="round" />
+      <path d="M12 12c2 2 3 3 3 5a3 3 0 0 1-6 0c0-2 1.5-3 3-5z" fill="#ffc800" />
+    </svg>
+  );
+}
+
+// Open treasure chest full of gems
+export function GemChestIcon({ size = 110 }: P) {
+  return (
+    <svg width={size} height={size * 0.9} viewBox="0 0 40 36">
+      <rect x="3" y="4" width="34" height="10" rx="3" fill="#8b4513" />
+      <path d="M8 16l4-7 4 5 4-8 4 8 4-5 4 7z" fill="#1cb0f6" />
+      <path d="M12 9l2 3m6-6 2 4" stroke="#84d8ff" strokeWidth="1.5" strokeLinecap="round" />
+      <rect x="3" y="15" width="34" height="18" rx="3" fill="#ffc800" />
+      <rect x="3" y="15" width="34" height="3" fill="#cd7900" />
+      <rect x="16" y="17" width="8" height="10" rx="2" fill="#cd7900" />
+      <circle cx="20" cy="21" r="1.6" fill="#ffc800" />
     </svg>
   );
 }
