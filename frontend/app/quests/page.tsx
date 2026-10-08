@@ -1,10 +1,13 @@
 "use client";
+import { useEffect, useState } from "react";
 import { QuestRow } from "@/components/Layout";
 import { ChestIcon, LockIcon } from "@/components/Icons";
 import Mascot from "@/components/Mascot";
 
 export default function QuestsPage() {
-  const hoursLeft = 24 - new Date().getHours(); // daily quests refresh at midnight
+  // daily quests refresh at midnight; worked out in the browser so it uses the learner's own clock
+  const [hoursLeft, setHoursLeft] = useState<number | null>(null);
+  useEffect(() => setHoursLeft(24 - new Date().getHours()), []);
 
   return (
     <div className="flex flex-col gap-6">
@@ -23,7 +26,7 @@ export default function QuestsPage() {
 
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-extrabold">Daily Quests</h2>
-        <span className="font-extrabold uppercase text-orange">⏱ {hoursLeft} hours</span>
+        {hoursLeft !== null && <span className="font-extrabold uppercase text-orange">⏱ {hoursLeft} hours</span>}
       </div>
       <div className="card"><QuestRow /></div>
       <div className="card flex items-center gap-6 text-lg font-extrabold text-muted">

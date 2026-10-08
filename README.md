@@ -1,5 +1,8 @@
 # Duolingo Clone
 
+**Live demo:** https://duolingo-clone-ivory-two.vercel.app
+**API:** https://duolingo-clone-production-6f65.up.railway.app/docs
+
 A Duolingo-style web app for learning Spanish. It has a learning path with lock/unlock progression, a lesson player with 5 exercise types, and gamification: XP, streaks, hearts, a daily goal, a leaderboard and achievements.
 
 ## Tech stack
