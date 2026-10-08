@@ -85,6 +85,7 @@ def today_xp(db: Session, user: models.User) -> int:
 
 def check_achievements(db: Session, user: models.User) -> list[models.Achievement]:
     """Unlock any achievement whose threshold is now reached. Returns the new ones."""
+    db.flush()  # write the lesson just added, so it is included in the count below
     lessons = db.query(models.LessonCompletion).filter_by(user_id=user.id).count()
     values = {"xp": user.xp, "streak": user.streak, "lessons": lessons}
     unlocked_ids = {ua.achievement_id for ua in db.query(models.UserAchievement).filter_by(user_id=user.id)}
