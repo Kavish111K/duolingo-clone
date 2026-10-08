@@ -166,6 +166,7 @@ function StatsBar() {
       <span className={`flex items-center gap-2 ${me.streak > 0 ? "text-orange" : "text-line"}`} title="Day streak">
         <FlameIcon active={me.streak > 0} />{me.streak}
       </span>
+      <Link href="/profile" className="flex items-center gap-2 text-gold" title="Total XP"><BoltIcon size={28} />{me.xp}</Link>
       <Link href="/shop" className="flex items-center gap-2 text-blue" title="Gems"><GemIcon />{me.gems}</Link>
       <Link href="/shop" className="flex items-center gap-2 text-red" title="Hearts"><HeartIcon />{me.hearts}</Link>
     </div>

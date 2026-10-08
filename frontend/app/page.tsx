@@ -75,11 +75,15 @@ function Star({ color }: { color: string }) {
   );
 }
 
+// Treasure chest on the path: only shows a message for now (rewards are a placeholder)
 function Chest({ open, offset }: { open: boolean; offset: number }) {
+  const { toast } = useUser();
   return (
-    <div aria-label="Treasure chest" style={{ transform: `translateX(${offset}px)` }}>
+    <button aria-label="Treasure chest" style={{ transform: `translateX(${offset}px)` }}
+      className="transition-transform hover:scale-105 active:scale-95"
+      onClick={() => toast(open ? "🎁 Chest rewards are coming soon!" : "🔒 Complete the levels above to open this chest")}>
       <ChestIcon size={84} locked={!open} />
-    </div>
+    </button>
   );
 }
 
