@@ -5,6 +5,23 @@
 
 A Duolingo-style web app for learning Spanish. It has a learning path with lock/unlock progression, a lesson player with 5 exercise types, and gamification: XP, streaks, hearts, a daily goal, a leaderboard and achievements.
 
+## Quick tour for evaluators
+
+No Spanish is needed: the [answer key](#answer-key) at the end lists every answer. Answers ignore capital letters and punctuation, and "Type the answer" is always in English.
+
+1. **First screen:** "How much Spanish do you know?" Pick any level and press Continue (or close it with ✕).
+2. **Learning path:** Basics is already completed (✓, 2 crowns). Click the bouncing **START** node (Greetings) → **Start +15 XP**.
+3. **Lesson:** 5 exercise types, a progress bar and the green/red feedback bar. **Enter** works like the Check/Continue button, and 🔊 reads the Spanish aloud.
+   - A wrong answer costs a heart, shows the correct solution, and the question comes back at the end of the lesson.
+4. **Lesson complete:** XP, accuracy and streak, with confetti. Finish both Greetings lessons to unlock **Food** and see the treasure chest turn gold.
+5. **Hearts:** you have 5. At 0 the out-of-hearts popup offers a refill (350 💎, you have 500) or a practice lesson that earns a heart back. Hearts also regenerate 1 every 30 minutes.
+6. **Legendary (timed):** click the completed **Basics** node → **Legendary +40 XP** for a 90-second challenge.
+7. **Streak:** **More → Settings → Developer tools → Next day** moves the learner to tomorrow. Finish a lesson to grow the streak; skip a day to see it reset.
+8. **Other pages:** Leaderboards (weekly league), Quests (daily XP goal), Shop (refill hearts), Profile (stats and achievements), and Settings (daily goal, dark mode, sound and animation toggles).
+9. **Responsive:** make the window narrow to see the mobile layout with a bottom navigation bar.
+
+The demo has a single shared learner (login is simplified), so progress you make on the live site is saved for everyone who opens it.
+
 ## Tech stack
 
 | Layer | Tech |
@@ -147,3 +164,49 @@ Go to **Settings → Developer tools → Next day**. This shifts the learner's "
 - Legendary is only available on completed skills. The 90-second timer runs in the browser.
 - Audio uses the browser's text-to-speech instead of recorded audio.
 - The mascot is an original SVG owl, not Duolingo's artwork.
+
+## Answer key
+
+Each skill has 2 lessons, played in order. Every lesson has the same 5 exercise types.
+
+**Basics** (Unit 1)
+
+| Lesson | Multiple choice | Translate (word bank) | Match pairs | Fill in the blank | Type the answer |
+|---|---|---|---|---|---|
+| 1 | el hombre | Yo soy un hombre | hombre = man, mujer = woman, niño = boy, niña = girl | Yo **soy** una mujer. | the boy |
+| 2 | la niña | La mujer está aquí | yo = I, tú = you, él = he, ella = she | Tú **eres** un niño. | the woman |
+
+**Greetings** (Unit 1)
+
+| Lesson | Multiple choice | Translate (word bank) | Match pairs | Fill in the blank | Type the answer |
+|---|---|---|---|---|---|
+| 1 | hola | Buenos días | hola = hello, adiós = goodbye, gracias = thank you, por favor = please | Buenas **tardes**, ¿cómo estás? | thank you |
+| 2 | adiós | ¿Cómo estás? | sí = yes, no = no, bien = well, mal = bad | Estoy muy **bien**, gracias. | good night |
+
+**Food** (Unit 1)
+
+| Lesson | Multiple choice | Translate (word bank) | Match pairs | Fill in the blank | Type the answer |
+|---|---|---|---|---|---|
+| 1 | la manzana | Yo bebo agua | pan = bread, agua = water, leche = milk, queso = cheese | Ella **come** una manzana. | the bread |
+| 2 | la leche | Yo como pan | café = coffee, arroz = rice, huevo = egg, pollo = chicken | Nosotros **bebemos** café. | the red apple |
+
+**Family** (Unit 2)
+
+| Lesson | Multiple choice | Translate (word bank) | Match pairs | Fill in the blank | Type the answer |
+|---|---|---|---|---|---|
+| 1 | la madre | Mi padre es alto | padre = father, madre = mother, hermano = brother, hermana = sister | Ella es mi **hermana**. | my family |
+| 2 | el abuelo | Yo amo a mi familia | hijo = son, hija = daughter, abuelo = grandfather, abuela = grandmother | Mi **hijo** tiene diez años. | the grandmother |
+
+**Animals** (Unit 2)
+
+| Lesson | Multiple choice | Translate (word bank) | Match pairs | Fill in the blank | Type the answer |
+|---|---|---|---|---|---|
+| 1 | el perro | El gato bebe leche | perro = dog, gato = cat, pájaro = bird, pez = fish | El **gato** come pescado. | the dog |
+| 2 | el caballo | Yo tengo un perro | vaca = cow, caballo = horse, cerdo = pig, oso = bear | Tengo un **caballo** grande. | the black cat |
+
+**Colors** (Unit 2)
+
+| Lesson | Multiple choice | Translate (word bank) | Match pairs | Fill in the blank | Type the answer |
+|---|---|---|---|---|---|
+| 1 | rojo | El coche es azul | rojo = red, azul = blue, verde = green, amarillo = yellow | La manzana es **roja**. | the white dog |
+| 2 | negro | Me gusta el color verde | negro = black, blanco = white, gris = gray, rosa = pink | El cielo es **azul**. | the yellow house |
